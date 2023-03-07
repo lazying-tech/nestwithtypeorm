@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSouceOptions),UserModule],
+  imports: [TypeOrmModule.forRoot(dataSouceOptions), UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

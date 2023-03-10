@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { CreateProfileDto } from './dto/create-profile.dto';
 
 @Controller('users')
 export class UserController {
@@ -39,5 +40,13 @@ export class UserController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Post(':id/profile')
+  async createProfile(
+    @Param('id') id: string,
+    @Body() createProfileDto: CreateProfileDto,
+  ) {
+    return this.userService.createProfile(+id, createProfileDto);
   }
 }

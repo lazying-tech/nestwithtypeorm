@@ -1,3 +1,5 @@
+import { Post } from 'src/post/entities/post.entity';
+import { Profile } from 'src/user/entities/profile.entity';
 import { User } from 'src/user/entities/user.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -8,9 +10,9 @@ export const dataSouceOptions: DataSourceOptions = {
   username: 'root',
   password: '',
   database: 'test',
-  entities: [User],
+  entities: [User, Profile, Post],
   migrations: ['dist/db/migrations/*.js'],
-  //   synchronize: true,
+  // synchronize: true,
 };
 
 const dataSource = new DataSource(dataSouceOptions);

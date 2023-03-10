@@ -1,14 +1,17 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateProfileDto } from './dto/create-profile.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Profile } from './entities/profile.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const userFound = await this.userRepository.findOne({
@@ -24,12 +27,17 @@ export class UserService {
   }
 
   async findAll() {
-    const users = await this.userRepository.find();
+    const users = await this.userRepository.find({
+      relations: ['posts', 'profile'],
+    });
     return users;
   }
 
   async findOne(id: number) {
-    const user = await this.userRepository.findOne({ where: { id: id } });
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+      relations: ['posts'],
+    });
 
     if (!user) {
       return new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -45,21 +53,30 @@ export class UserService {
         HttpStatus.NOT_FOUND,
       );
     }
-    await this.userRepository.update({ id }, updateUserDto);
-    const userafterupdate = await this.userRepository.findOne({
-      where: { id: id },
-    });
-    return userafterupdate;
+    const updateUser = Object.assign(user, updateUserDto);
+    return this.userRepository.save(updateUser);
   }
 
   async remove(id: number) {
-    const user = await this.userRepository.findOne({ where: { id: id } });
-    if (!user) {
-      return new HttpException(
-        'User not found to delete',
-        HttpStatus.NOT_FOUND,
-      );
+    const result = await this.userRepository.delete({ id });
+    if (result.affected === 0) {
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    return await this.userRepository.delete({ id });
+    return result;
+  }
+
+  async createProfile(id: number, profileDto: CreateProfileDto) {
+    const userFound = await this.userRepository.findOne({ where: { id: id } });
+
+    if (!userFound) {
+      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const newProfile = await this.profileRepository.create(profileDto);
+
+    const savedProfile = await this.profileRepository.save(newProfile);
+
+    userFound.profile = savedProfile;
+    return this.userRepository.save(userFound);
   }
 }

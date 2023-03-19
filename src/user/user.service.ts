@@ -4,26 +4,23 @@ import { Repository } from 'typeorm';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Profile } from './entities/profile.entity';
+
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const userFound = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-
-    if (userFound) {
-      return new HttpException('User already exists', HttpStatus.CONFLICT);
-    }
-
-    const newUser = await this.userRepository.create(createUserDto);
-    return await this.userRepository.save(newUser);
+    // const userFound = await this.userRepository.findOne({
+    //   where: { email: createUserDto.email },
+    // });
+    // if (userFound) {
+    //   return new HttpException('User already exists', HttpStatus.CONFLICT);
+    // }
+    // const newUser = await this.userRepository.create(createUserDto);
+    // return await this.userRepository.save(newUser);
   }
 
   async findAll() {
@@ -72,11 +69,11 @@ export class UserService {
       return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const newProfile = await this.profileRepository.create(profileDto);
+    // const newProfile = await this.profileRepository.create(profileDto);
 
-    const savedProfile = await this.profileRepository.save(newProfile);
+    // const savedProfile = await this.profileRepository.save(newProfile);
 
-    userFound.profile = savedProfile;
+    // userFound.profile = savedProfile;
     return this.userRepository.save(userFound);
   }
 }

@@ -14,11 +14,7 @@ export class PostService {
   ) {}
 
   async create(createPostDto: CreatePostDto) {
-    const userFound = await this.userService.findOne(createPostDto.authorId);
-
-    if (!userFound) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
+    await this.userService.findOne(createPostDto.authorId);
 
     const newPost = this.postRepository.create(createPostDto);
     return await this.postRepository.save(newPost);

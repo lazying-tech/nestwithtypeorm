@@ -1,5 +1,5 @@
 import { Account } from 'src/accounts/entities/account.entity';
-import { Bill } from 'src/bills/entities/bill.entity';
+
 
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -28,6 +28,5 @@ export class User {
   @OneToMany(() => Account, (account) => account.user)
   accounts: Account[];
 
-  @OneToMany(() => Bill, (bill) => bill.user)
-  bills: Bill[];
+ 
 }

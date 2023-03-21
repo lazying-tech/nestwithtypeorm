@@ -10,10 +10,11 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
 import { AccountsModule } from './accounts/accounts.module';
-import { PermissionsModule } from './permissions/permissions.module';
-import { EmployeesModule } from './employees/employees.module';
+
+
 import { BillsModule } from './bills/bills.module';
 import { BillsProductsModule } from './bills_products/bills_products.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { BillsProductsModule } from './bills_products/bills_products.module';
     BrandsModule,
     AccountsModule,
     PermissionsModule,
-    EmployeesModule,
+   
     BillsModule,
     BillsProductsModule,
   ],

@@ -1,4 +1,5 @@
-import { Employee } from 'src/employees/entities/employee.entity';
+
+import { Bill } from 'src/bills/entities/bill.entity';
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -31,10 +33,9 @@ export class Account {
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
-  @ManyToOne(() => Employee, (employee) => employee.accounts)
-  @JoinColumn({ name: 'employeeId', referencedColumnName: 'id' })
-  employee: Employee;
-
+  @OneToMany(() => Bill, (bill) => bill.user)
+  bills: Bill[];
+  
   @OneToOne(() => Permission)
   @JoinColumn()
   permission: number;

@@ -1,7 +1,8 @@
+import { Account } from 'src/accounts/entities/account.entity';
 import { BillProducts } from 'src/bills_products/entities/bills_product.entity';
-import { Employee } from 'src/employees/entities/employee.entity';
 
-import { User } from 'src/user/entities/user.entity';
+
+
 import {
   Column,
   Entity,
@@ -25,13 +26,13 @@ export class Bill {
   @Column()
   totalPrice: number;
 
-  @ManyToOne(() => User, (user) => user.bills)
+  @ManyToOne(() => Account, (account) => account.bills)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user: User;
+  user:Account ;
 
-  @ManyToOne(() => Employee, (employee) => employee.bills)
+  @ManyToOne(() => Account, (account) => account.bills)
   @JoinColumn({ name: 'employeeId', referencedColumnName: 'id' })
-  employee: Employee;
+  employee: Account;
 
   @OneToMany(() => BillProducts, (billsproducts) => billsproducts.bill)
   billProducts: BillProducts[];

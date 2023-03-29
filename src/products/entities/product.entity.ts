@@ -6,7 +6,7 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,7 +27,7 @@ export class Product {
   @Column({ type: 'varchar', length: 50 })
   unit: string;
 
-  @OneToOne(() => Brand)
+  @ManyToOne(() => Brand,brand=>brand.products)
   @JoinColumn()
   brand: Brand;
 

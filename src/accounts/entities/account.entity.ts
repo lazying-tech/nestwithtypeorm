@@ -1,4 +1,3 @@
-
 import { Bill } from 'src/bills/entities/bill.entity';
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -8,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,17 +24,21 @@ export class Account {
   @Column({ type: 'varchar', length: 50, unique: true })
   email: string;
 
-  @Column({ type: 'int', width: 1 })
+  @Column({ type: 'int', width: 1, default: 1 })
   enable: number;
 
-  @ManyToOne(() => User, (user) => user.accounts)
+  @ManyToOne(() => User, (user) => user.accounts, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
   @OneToMany(() => Bill, (bill) => bill.user)
   bills: Bill[];
-  
-  @OneToOne(() => Permission)
-  @JoinColumn()
-  permission: number;
+
+  @ManyToOne(() => Permission, (permission) => permission.accounts, {
+    createForeignKeyConstraints: false,
+  })
+  @JoinColumn({ name: 'permissionId', referencedColumnName: 'id' })
+  permission: Permission;
 }

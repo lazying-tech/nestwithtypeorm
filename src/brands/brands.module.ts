@@ -6,8 +6,9 @@ import { Brand } from './entities/brand.entity';
 import { CategoriesModule } from 'src/categories/categories.module';
 
 @Module({
-  imports:[CategoriesModule,TypeOrmModule.forFeature([Brand])],
+  imports: [CategoriesModule, TypeOrmModule.forFeature([Brand])],
   controllers: [BrandsController],
-  providers: [BrandsService]
+  providers: [BrandsService],
+  exports:[BrandsService]
 })
 export class BrandsModule {}

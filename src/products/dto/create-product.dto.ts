@@ -5,7 +5,5 @@ export class CreateProductDto {
     unit:string
     img:string
     description:string
-    enable:number
-    brand:1|0   
     brandId:number
 }

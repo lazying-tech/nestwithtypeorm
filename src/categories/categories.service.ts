@@ -32,11 +32,40 @@ export class CategoriesService {
     return MSG('Done!', category, null, HttpStatus.OK);
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const categoryFound = await this.categoryRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!categoryFound) {
+      return MSG(
+        'Category not found to update',
+        null,
+        null,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const updateCategory = Object.assign(categoryFound, updateCategoryDto);
+    const save = await this.categoryRepository.save(updateCategory);
+
+    return MSG('Update completed', save, null, HttpStatus.OK);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    const categoryFound = await this.categoryRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!categoryFound) {
+      return MSG(
+        'Category not found to remove',
+        null,
+        null,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const removedcategory = await this.categoryRepository.delete({ id });
+    return MSG('Remove completed', removedcategory, null, HttpStatus.OK);
   }
 }

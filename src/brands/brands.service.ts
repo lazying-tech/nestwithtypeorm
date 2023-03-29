@@ -28,25 +28,60 @@ export class BrandsService {
       );
     }
 
-    const newBrand = this.brandRepository.create(createBrandDto);
-    console.log(createBrandDto);
+    const newBrand = this.brandRepository.create({
+      name: createBrandDto.name,
+      category: { id: createBrandDto.categoryId },
+    });
+
     const save = await this.brandRepository.save(newBrand);
     return MSG('Done!', save, null, HttpStatus.OK);
   }
 
-  findAll() {
-    return `This action returns all brands`;
+  async findAll() {
+    return await this.brandRepository.find({
+      relations: ['category'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} brand`;
+  async findOne(id: number) {
+    const brandFound = await this.brandRepository.findOne({
+      where: { id: id },
+      relations: ['category'],
+    });
+    if (!brandFound) {
+      return MSG('Brand not found to update', null, null, HttpStatus.NOT_FOUND);
+    }
+    return MSG('Done!', brandFound, null, HttpStatus.OK);
   }
 
-  update(id: number, updateBrandDto: UpdateBrandDto) {
-    return `This action updates a #${id} brand`;
+  async update(id: number, updateBrandDto: UpdateBrandDto) {
+    const brandFound = await this.brandRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!brandFound) {
+      return MSG('Brand not found to update', null, null, HttpStatus.NOT_FOUND);
+    }
+
+    const updatedBrand = await this.brandRepository.update(
+      { id },
+      {
+        name: updateBrandDto.name,
+        category: { id: updateBrandDto.categoryId },
+      },
+    );
+    return MSG('Update completed', updatedBrand, null, HttpStatus.OK);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} brand`;
+  async remove(id: number) {
+    const brandFound = await this.brandRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!brandFound) {
+      return MSG('Brand not found to remove', null, null, HttpStatus.NOT_FOUND);
+    }
+    const removedBrand = await this.brandRepository.delete({ id });
+    return MSG('Remove completed', removedBrand, null, HttpStatus.OK);
   }
 }

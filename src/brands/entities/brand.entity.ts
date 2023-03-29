@@ -1,9 +1,11 @@
 import { Category } from 'src/categories/entities/category.entity';
+import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -15,7 +17,13 @@ export class Brand {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @ManyToOne(() => Category, (category) => category.brands)
+  @ManyToOne(() => Category, (category) => category.brands, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'categoryId', referencedColumnName: 'id' })
   category: Category;
+
+
+  @OneToMany(()=>Product,product=>product.brand)
+  products:Product[]
 }

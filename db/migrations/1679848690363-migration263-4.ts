@@ -1,12 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class migration19321679223426498 implements MigrationInterface {
-  name = 'migration19321679223426498';
+export class migration26341679848690363 implements MigrationInterface {
+  name = 'migration26341679848690363';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE \`brands\` DROP FOREIGN KEY \`FK_b209d7ccd90ae0ca1605794a0d5\``,
-    );
     await queryRunner.query(
       `ALTER TABLE \`brands\` CHANGE \`categoryId\` \`categoryId\` int NULL`,
     );
@@ -44,25 +41,10 @@ export class migration19321679223426498 implements MigrationInterface {
       `ALTER TABLE \`bills\` CHANGE \`employeeId\` \`employeeId\` int NULL`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_3aa23c0a6d107393e8b40e3e2a6\``,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_4061f12ef3c638fa57eaffe4f98\``,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_ddb2c16b039fb7a6088af414c45\``,
-    );
-    await queryRunner.query(
       `ALTER TABLE \`accounts\` CHANGE \`userId\` \`userId\` int NULL`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`accounts\` CHANGE \`employeeId\` \`employeeId\` int NULL`,
-    );
-    await queryRunner.query(
       `ALTER TABLE \`accounts\` CHANGE \`permissionId\` \`permissionId\` int NULL`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`brands\` ADD CONSTRAINT \`FK_b209d7ccd90ae0ca1605794a0d5\` FOREIGN KEY (\`categoryId\`) REFERENCES \`categories\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE \`products\` ADD CONSTRAINT \`FK_ea86d0c514c4ecbb5694cbf57df\` FOREIGN KEY (\`brandId\`) REFERENCES \`brands\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -74,32 +56,14 @@ export class migration19321679223426498 implements MigrationInterface {
       `ALTER TABLE \`bills_products\` ADD CONSTRAINT \`FK_2dcb0073f8a9000519739e92c3f\` FOREIGN KEY (\`productId\`) REFERENCES \`products\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_dd941796f5112bc83a7bf499f86\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_dd941796f5112bc83a7bf499f86\` FOREIGN KEY (\`userId\`) REFERENCES \`accounts\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_468a8ae0352d6a0647bd770e11c\` FOREIGN KEY (\`employeeId\`) REFERENCES \`employees\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_3aa23c0a6d107393e8b40e3e2a6\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_4061f12ef3c638fa57eaffe4f98\` FOREIGN KEY (\`employeeId\`) REFERENCES \`employees\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_ddb2c16b039fb7a6088af414c45\` FOREIGN KEY (\`permissionId\`) REFERENCES \`permissions\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_468a8ae0352d6a0647bd770e11c\` FOREIGN KEY (\`employeeId\`) REFERENCES \`accounts\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_ddb2c16b039fb7a6088af414c45\``,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_4061f12ef3c638fa57eaffe4f98\``,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` DROP FOREIGN KEY \`FK_3aa23c0a6d107393e8b40e3e2a6\``,
-    );
     await queryRunner.query(
       `ALTER TABLE \`bills\` DROP FOREIGN KEY \`FK_468a8ae0352d6a0647bd770e11c\``,
     );
@@ -116,25 +80,10 @@ export class migration19321679223426498 implements MigrationInterface {
       `ALTER TABLE \`products\` DROP FOREIGN KEY \`FK_ea86d0c514c4ecbb5694cbf57df\``,
     );
     await queryRunner.query(
-      `ALTER TABLE \`brands\` DROP FOREIGN KEY \`FK_b209d7ccd90ae0ca1605794a0d5\``,
-    );
-    await queryRunner.query(
       `ALTER TABLE \`accounts\` CHANGE \`permissionId\` \`permissionId\` int NULL DEFAULT 'NULL'`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`accounts\` CHANGE \`employeeId\` \`employeeId\` int NULL DEFAULT 'NULL'`,
-    );
-    await queryRunner.query(
       `ALTER TABLE \`accounts\` CHANGE \`userId\` \`userId\` int NULL DEFAULT 'NULL'`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_ddb2c16b039fb7a6088af414c45\` FOREIGN KEY (\`permissionId\`) REFERENCES \`permissions\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_4061f12ef3c638fa57eaffe4f98\` FOREIGN KEY (\`employeeId\`) REFERENCES \`employees\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`accounts\` ADD CONSTRAINT \`FK_3aa23c0a6d107393e8b40e3e2a6\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE \`bills\` CHANGE \`employeeId\` \`employeeId\` int NULL DEFAULT 'NULL'`,
@@ -146,10 +95,10 @@ export class migration19321679223426498 implements MigrationInterface {
       `ALTER TABLE \`bills\` CHANGE \`createAt\` \`createAt\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP()`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_468a8ae0352d6a0647bd770e11c\` FOREIGN KEY (\`employeeId\`) REFERENCES \`employees\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_468a8ae0352d6a0647bd770e11c\` FOREIGN KEY (\`employeeId\`) REFERENCES \`accounts\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_dd941796f5112bc83a7bf499f86\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE \`bills\` ADD CONSTRAINT \`FK_dd941796f5112bc83a7bf499f86\` FOREIGN KEY (\`userId\`) REFERENCES \`accounts\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE \`bills_products\` CHANGE \`productId\` \`productId\` int NULL DEFAULT 'NULL'`,
@@ -171,9 +120,6 @@ export class migration19321679223426498 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE \`brands\` CHANGE \`categoryId\` \`categoryId\` int NULL DEFAULT 'NULL'`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE \`brands\` ADD CONSTRAINT \`FK_b209d7ccd90ae0ca1605794a0d5\` FOREIGN KEY (\`categoryId\`) REFERENCES \`categories\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
   }
 }

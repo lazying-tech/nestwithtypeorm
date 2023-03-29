@@ -11,10 +11,11 @@ import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
 import { AccountsModule } from './accounts/accounts.module';
 
-
 import { BillsModule } from './bills/bills.module';
 import { BillsProductsModule } from './bills_products/bills_products.module';
 import { PermissionsModule } from './permissions/permissions.module';
+
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,9 +27,9 @@ import { PermissionsModule } from './permissions/permissions.module';
     BrandsModule,
     AccountsModule,
     PermissionsModule,
-   
     BillsModule,
     BillsProductsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

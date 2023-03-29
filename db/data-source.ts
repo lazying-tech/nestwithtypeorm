@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Account } from 'src/accounts/entities/account.entity';
 import { Bill } from 'src/bills/entities/bill.entity';
 import { BillProducts } from 'src/bills_products/entities/bills_product.entity';

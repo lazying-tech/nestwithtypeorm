@@ -1,7 +1,8 @@
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MSG } from 'src/message';
 import { Repository } from 'typeorm';
-import { CreateProfileDto } from './dto/create-profile.dto';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -13,45 +14,34 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    // const userFound = await this.userRepository.findOne({
-    //   where: { email: createUserDto.email },
-    // });
-    // if (userFound) {
-    //   return new HttpException('User already exists', HttpStatus.CONFLICT);
-    // }
-    // const newUser = await this.userRepository.create(createUserDto);
-    // return await this.userRepository.save(newUser);
+    const newuser = this.userRepository.create(createUserDto);
+    return await this.userRepository.save(newuser);
   }
 
   async findAll() {
-    const users = await this.userRepository.find({
-      relations: ['posts', 'profile'],
-    });
+    const users = await this.userRepository.find();
     return users;
   }
 
   async findOne(id: number) {
     const user = await this.userRepository.findOne({
       where: { id: id },
-      relations: ['posts'],
     });
 
     if (!user) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+      return MSG('User not found', null, null, HttpStatus.NOT_FOUND);
     }
-    return user;
+    return MSG('Done!', user, null, HttpStatus.OK);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
-      return new HttpException(
-        'User not found to update',
-        HttpStatus.NOT_FOUND,
-      );
+      return MSG('User not found to update', null, null, HttpStatus.NOT_FOUND);
     }
     const updateUser = Object.assign(user, updateUserDto);
-    return this.userRepository.save(updateUser);
+    const save = await this.userRepository.save(updateUser);
+    return MSG('Update completed', save, null, HttpStatus.OK);
   }
 
   async remove(id: number) {
@@ -59,21 +49,6 @@ export class UserService {
     if (result.affected === 0) {
       return new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    return result;
-  }
-
-  async createProfile(id: number, profileDto: CreateProfileDto) {
-    const userFound = await this.userRepository.findOne({ where: { id: id } });
-
-    if (!userFound) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
-
-    // const newProfile = await this.profileRepository.create(profileDto);
-
-    // const savedProfile = await this.profileRepository.save(newProfile);
-
-    // userFound.profile = savedProfile;
-    return this.userRepository.save(userFound);
+    return MSG('Remove completed', result, null, HttpStatus.OK);
   }
 }

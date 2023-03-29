@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { CreateProfileDto } from './dto/create-profile.dto';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { PermissionGuard } from 'src/permission.guard';
 
 @Controller('users')
 export class UserController {
@@ -32,6 +34,7 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin']))
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
@@ -40,13 +43,5 @@ export class UserController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.userService.remove(+id);
-  }
-
-  @Post(':id/profile')
-  async createProfile(
-    @Param('id') id: string,
-    @Body() createProfileDto: CreateProfileDto,
-  ) {
-    return this.userService.createProfile(+id, createProfileDto);
   }
 }

@@ -1,5 +1,12 @@
-import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  HttpStatus,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { MSG } from 'src/message';
 import { Repository } from 'typeorm';
 
@@ -8,14 +15,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import { User } from './entities/user.entity';
 
-@Injectable()
+@Injectable({})
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
     const newuser = this.userRepository.create(createUserDto);
-    return await this.userRepository.save(newuser);
+    const save = await this.userRepository.save(newuser);
+
+    return save;
   }
 
   async findAll() {
@@ -45,10 +54,15 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const result = await this.userRepository.delete({ id });
-    if (result.affected === 0) {
-      return new HttpException('User not found', HttpStatus.NOT_FOUND);
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    if (!user) {
+      return MSG('User not found to delete', null, null, HttpStatus.NOT_FOUND);
     }
-    return MSG('Remove completed', result, null, HttpStatus.OK);
+    const updateUser = Object.assign(user, {
+      enable: 0,
+    });
+
+    const save = await this.userRepository.save(updateUser);
+    return MSG('Remove completed', save, null, HttpStatus.OK);
   }
 }

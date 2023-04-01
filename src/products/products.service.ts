@@ -95,4 +95,22 @@ export class ProductsService {
     const save = await this.productRepository.save(updateProduct);
     return MSG('Update completed', save, null, HttpStatus.OK);
   }
+
+  async remove(id: number) {
+    const product = await this.productRepository.findOne({ where: { id: id } });
+    if (!product) {
+      return MSG(
+        'Product not found to delete',
+        null,
+        null,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const updateProduct = Object.assign(product, {
+      enable: 0,
+    });
+
+    const save = await this.productRepository.save(updateProduct);
+    return MSG('Remove completed', save, null, HttpStatus.OK);
+  }
 }

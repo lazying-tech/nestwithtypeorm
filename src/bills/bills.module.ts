@@ -6,9 +6,9 @@ import { Bill } from './entities/bill.entity';
 import { AccountsModule } from 'src/accounts/accounts.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Bill]),AccountsModule],
+  imports: [TypeOrmModule.forFeature([Bill]), AccountsModule],
   controllers: [BillsController],
   providers: [BillsService],
-  exports:[BillsService]
+  exports: [BillsService],
 })
 export class BillsModule {}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 26, 2023 lúc 06:56 PM
+-- Thời gian đã tạo: Th4 01, 2023 lúc 09:10 AM
 -- Phiên bản máy phục vụ: 10.4.22-MariaDB
 -- Phiên bản PHP: 7.4.27
 
@@ -42,8 +42,9 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `username`, `password`, `email`, `enable`, `userId`, `permissionId`) VALUES
-(1, 'admin', '$2b$10$pIOLB9Wnw84JupTuHg', 'admin@gmail.com', 1, NULL, 2),
-(2, 'hao', '$2b$10$UeSP3Js9ZWqfNPUUZ3', 'hao1@gmail.com', 1, 1, 3);
+(1, 'hao', '$2b$10$i1gPAb5tzKCSSPqvAr', 'hao@gmail.com', 1, NULL, 3),
+(2, 'admin', '$2b$10$Sn4CoATlG8vZISYDhb', 'admin@gmail.com', 1, NULL, 2),
+(3, 'hao1', '$2b$10$SiAhOEfGIpVLJG6dxf', 'hao1@gmail.com', 1, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -60,6 +61,13 @@ CREATE TABLE `bills` (
   `employeeId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `bills`
+--
+
+INSERT INTO `bills` (`id`, `createAt`, `status`, `totalPrice`, `userId`, `employeeId`) VALUES
+(2, '2023-03-30 17:27:48', 'Đã xóa', 100010, 3, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -74,6 +82,13 @@ CREATE TABLE `bills_products` (
   `productId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `bills_products`
+--
+
+INSERT INTO `bills_products` (`id`, `quantity`, `price`, `billId`, `productId`) VALUES
+(1, 10, 10000, 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -86,6 +101,14 @@ CREATE TABLE `brands` (
   `categoryId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `brands`
+--
+
+INSERT INTO `brands` (`id`, `name`, `categoryId`) VALUES
+(1, 'Nike', 1),
+(2, 'Addidas', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -96,6 +119,14 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, 'shoes'),
+(2, 'clothes');
 
 -- --------------------------------------------------------
 
@@ -135,6 +166,13 @@ CREATE TABLE `products` (
   `brandId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `quantity`, `price`, `unit`, `img`, `description`, `enable`, `brandId`) VALUES
+(1, 'Nike Air Force', 10, 10000, 'VND', 'img1.jpeg', 'abcd', 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -155,7 +193,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstName`, `lastName`, `address`, `phone`, `enable`) VALUES
-(1, 'Le', 'Hao', '123 Baker', 123456789, 1);
+(4, 'Le', 'Hao', '123 Bakery', 123456789, 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -209,7 +247,7 @@ ALTER TABLE `permissions`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `REL_ea86d0c514c4ecbb5694cbf57d` (`brandId`);
+  ADD KEY `FK_ea86d0c514c4ecbb5694cbf57df` (`brandId`);
 
 --
 -- Chỉ mục cho bảng `users`
@@ -225,31 +263,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `bills`
 --
 ALTER TABLE `bills`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `bills_products`
 --
 ALTER TABLE `bills_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `permissions`
@@ -261,13 +299,13 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

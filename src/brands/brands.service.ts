@@ -1,8 +1,10 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { CategoriesService } from 'src/categories/categories.service';
 
 import { MSG } from 'src/message';
+import { PermissionGuard } from 'src/permission.guard';
 import { Repository } from 'typeorm';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -14,6 +16,8 @@ export class BrandsService {
     @InjectRepository(Brand) private brandRepository: Repository<Brand>,
     private categoryService: CategoriesService,
   ) {}
+
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin']))
   async create(createBrandDto: CreateBrandDto) {
     const categoryFound = await this.categoryService.findOne(
       createBrandDto.categoryId,
@@ -53,7 +57,7 @@ export class BrandsService {
     }
     return MSG('Done!', brandFound, null, HttpStatus.OK);
   }
-
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin']))
   async update(id: number, updateBrandDto: UpdateBrandDto) {
     const brandFound = await this.brandRepository.findOne({
       where: { id: id },
@@ -72,7 +76,7 @@ export class BrandsService {
     );
     return MSG('Update completed', updatedBrand, null, HttpStatus.OK);
   }
-
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin']))
   async remove(id: number) {
     const brandFound = await this.brandRepository.findOne({
       where: { id: id },

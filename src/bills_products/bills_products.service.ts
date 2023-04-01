@@ -6,7 +6,7 @@ import { MSG } from 'src/message';
 import { ProductsService } from 'src/products/products.service';
 import { Repository } from 'typeorm';
 import { CreateBillsProductDto } from './dto/create-bills_product.dto';
-import { UpdateBillsProductDto } from './dto/update-bills_product.dto';
+
 import { BillProducts } from './entities/bills_product.entity';
 
 @Injectable()
@@ -58,13 +58,5 @@ export class BillsProductsService {
 
   findOne(id: number) {
     return `This action returns a #${id} billsProduct`;
-  }
-
-  update(id: number, updateBillsProductDto: UpdateBillsProductDto) {
-    return `This action updates a #${id} billsProduct`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} billsProduct`;
   }
 }

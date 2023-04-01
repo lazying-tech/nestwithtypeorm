@@ -1,4 +1,10 @@
-import { Body, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Body,
+  forwardRef,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { genSalt, hash } from 'bcrypt';
 import { MSG } from 'src/message';
@@ -51,6 +57,7 @@ export class AccountsService {
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
     const account = await this.accountRepository.findOne({ where: { id: id } });
+
     if (!account) {
       return MSG(
         'Acount not found to update',
@@ -82,7 +89,21 @@ export class AccountsService {
     return MSG('Update completed', save, null, HttpStatus.OK);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: number) {
+    const account = await this.accountRepository.findOne({ where: { id: id } });
+    if (!account) {
+      return MSG(
+        'Acount not found to delete',
+        null,
+        null,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const updateAccount = Object.assign(account, {
+      enable: 0,
+    });
+
+    const save = await this.accountRepository.save(updateAccount);
+    return MSG('Remove completed', save, null, HttpStatus.OK);
   }
 }

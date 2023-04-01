@@ -1,8 +1,6 @@
 import { Account } from 'src/accounts/entities/account.entity';
 import { BillProducts } from 'src/bills_products/entities/bills_product.entity';
 
-
-
 import {
   Column,
   Entity,
@@ -28,7 +26,7 @@ export class Bill {
 
   @ManyToOne(() => Account, (account) => account.bills)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user:Account ;
+  user: Account;
 
   @ManyToOne(() => Account, (account) => account.bills)
   @JoinColumn({ name: 'employeeId', referencedColumnName: 'id' })

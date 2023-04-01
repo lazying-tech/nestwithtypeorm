@@ -23,11 +23,13 @@ export class AccountsController {
     return this.accountsService.create(createAccountDto);
   }
 
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin', 'employee']))
   @Get()
   findAll() {
     return this.accountsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin', 'employee']))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.accountsService.findOne(+id);
@@ -39,6 +41,7 @@ export class AccountsController {
     return this.accountsService.update(+id, updateAccountDto);
   }
 
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin']))
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.accountsService.remove(+id);

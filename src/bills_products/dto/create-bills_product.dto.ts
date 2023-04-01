@@ -1,5 +1,5 @@
 export class CreateBillsProductDto {
-    productId:number
-    quantity:number
-    price:number
+  productId: number;
+  quantity: number;
+  price: number;
 }

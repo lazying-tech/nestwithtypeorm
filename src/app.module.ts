@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
+
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
@@ -16,20 +16,21 @@ import { BillsProductsModule } from './bills_products/bills_products.module';
 import { PermissionsModule } from './permissions/permissions.module';
 
 import { AuthModule } from './auth/auth.module';
+import { UserAccountsModule } from './user-accounts/user-accounts.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSouceOptions),
     UserModule,
-    PostModule,
     ProductsModule,
     CategoriesModule,
     BrandsModule,
+    AuthModule,
     AccountsModule,
     PermissionsModule,
     BillsModule,
     BillsProductsModule,
-    AuthModule,
+    UserAccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

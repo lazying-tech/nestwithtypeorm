@@ -26,10 +26,9 @@ export class AuthService {
       );
     }
 
-    const passwordMatches = compare(password, account.password);
+    const passwordMatches = await compare(password, account.password);
 
     if (passwordMatches) {
-      account.password = '';
       return account;
     } else {
       return null;
@@ -37,7 +36,8 @@ export class AuthService {
   }
 
   async register(createAccountDto: CreateAccountDto) {
-    await this.accountsService.create(createAccountDto);
+    const account = await this.accountsService.create(createAccountDto);
+    return account;
   }
 
   async login(account: Account) {
@@ -46,6 +46,7 @@ export class AuthService {
       sub: account.id,
       permission: account.permission.name,
     };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

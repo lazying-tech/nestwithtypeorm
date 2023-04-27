@@ -28,7 +28,7 @@ export const dataSouceOptions: DataSourceOptions = {
     BillProducts,
   ],
   migrations: ['dist/db/migrations/*.js'],
-  synchronize: true,
+  // synchronize: true,
 };
 
 const dataSource = new DataSource(dataSouceOptions);

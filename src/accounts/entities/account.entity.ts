@@ -18,7 +18,7 @@ export class Account {
   @Column({ type: 'varchar', length: 25, unique: true })
   username: string;
 
-  @Column({ type: 'varchar', length: 25 })
+  @Column({ type: 'varchar', length: 100 })
   password: string;
 
   @Column({ type: 'varchar', length: 50, unique: true })

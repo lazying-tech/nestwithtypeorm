@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 01, 2023 lúc 09:10 AM
+-- Thời gian đã tạo: Th4 27, 2023 lúc 01:25 PM
 -- Phiên bản máy phục vụ: 10.4.22-MariaDB
 -- Phiên bản PHP: 7.4.27
 
@@ -30,21 +30,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL,
   `username` varchar(25) NOT NULL,
-  `password` varchar(25) NOT NULL,
   `email` varchar(50) NOT NULL,
   `enable` int(1) NOT NULL DEFAULT 1,
   `userId` int(11) DEFAULT NULL,
-  `permissionId` int(11) DEFAULT NULL
+  `permissionId` int(11) DEFAULT NULL,
+  `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `username`, `password`, `email`, `enable`, `userId`, `permissionId`) VALUES
-(1, 'hao', '$2b$10$i1gPAb5tzKCSSPqvAr', 'hao@gmail.com', 1, NULL, 3),
-(2, 'admin', '$2b$10$Sn4CoATlG8vZISYDhb', 'admin@gmail.com', 1, NULL, 2),
-(3, 'hao1', '$2b$10$SiAhOEfGIpVLJG6dxf', 'hao1@gmail.com', 1, 4, 1);
+INSERT INTO `accounts` (`id`, `username`, `email`, `enable`, `userId`, `permissionId`, `password`) VALUES
+(1, 'admin', 'admin@gmail.com', 1, NULL, 2, '$2b$10$ts23PNmGKt3yxjfVyb/pdus17n2EyQDMHDnwbmndwkrP3SGmdWVcW'),
+(2, 'hao1', 'hao1@gmail.com', 1, NULL, 1, '$2b$10$fRb4O64kS/SGRsrM0hAAW.c/9/EJu24JL5I57AahWqSc/GfMbKLhy');
 
 -- --------------------------------------------------------
 
@@ -66,7 +65,7 @@ CREATE TABLE `bills` (
 --
 
 INSERT INTO `bills` (`id`, `createAt`, `status`, `totalPrice`, `userId`, `employeeId`) VALUES
-(2, '2023-03-30 17:27:48', 'Đã xóa', 100010, 3, 2);
+(2, '2023-03-30 17:27:48', 'Đã xóa', 100010, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -263,7 +262,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `bills`

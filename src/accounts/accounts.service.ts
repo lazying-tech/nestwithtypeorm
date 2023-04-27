@@ -1,12 +1,6 @@
-import {
-  Body,
-  forwardRef,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { genSalt, hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { MSG } from 'src/message';
 import { UserService } from 'src/user/user.service';
 
@@ -24,8 +18,7 @@ export class AccountsService {
   ) {}
 
   async create(createAccountDto: CreateAccountDto) {
-    const salt = await genSalt(10);
-    const passwordHashed = await hash(createAccountDto.password, salt);
+    const passwordHashed = await hash(createAccountDto.password, 10);
 
     const newAccount = this.accountRepository.create({
       username: createAccountDto.username,
@@ -34,6 +27,7 @@ export class AccountsService {
       permission: { id: 1 },
       enable: 1,
     });
+
     return await this.accountRepository.save(newAccount);
   }
 

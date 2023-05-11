@@ -25,7 +25,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['admin', 'employee']))
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

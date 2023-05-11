@@ -31,8 +31,8 @@ export class AccountsService {
     return await this.accountRepository.save(newAccount);
   }
 
-  findAll() {
-    return `This action returns all accounts`;
+  async findAll() {
+    return await this.accountRepository.find();
   }
 
   async findByUsername(username: string) {

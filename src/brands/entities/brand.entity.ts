@@ -17,13 +17,10 @@ export class Brand {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @ManyToOne(() => Category, (category) => category.brands, {
-    createForeignKeyConstraints: false,
-  })
+  @ManyToOne(() => Category, (category) => category.brands)
   @JoinColumn({ name: 'categoryId', referencedColumnName: 'id' })
   category: Category;
 
-
-  @OneToMany(()=>Product,product=>product.brand)
-  products:Product[]
+  @OneToMany(() => Product, (product) => product.brand)
+  products: Product[];
 }

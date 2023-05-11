@@ -18,7 +18,7 @@ export class Account {
   @Column({ type: 'varchar', length: 25, unique: true })
   username: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'text' })
   password: string;
 
   @Column({ type: 'varchar', length: 50, unique: true })
@@ -27,18 +27,14 @@ export class Account {
   @Column({ type: 'int', width: 1, default: 1 })
   enable: number;
 
-  @ManyToOne(() => User, (user) => user.accounts, {
-    createForeignKeyConstraints: false,
-  })
+  @ManyToOne(() => User, (user) => user.accounts)
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
   @OneToMany(() => Bill, (bill) => bill.user)
   bills: Bill[];
 
-  @ManyToOne(() => Permission, (permission) => permission.accounts, {
-    createForeignKeyConstraints: false,
-  })
+  @ManyToOne(() => Permission, (permission) => permission.accounts)
   @JoinColumn({ name: 'permissionId', referencedColumnName: 'id' })
   permission: Permission;
 }

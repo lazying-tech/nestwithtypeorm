@@ -15,7 +15,7 @@ import { UserAccountsService } from './user-accounts.service';
 export class UserAccountsController {
   constructor(private readonly userAccountsService: UserAccountsService) {}
 
-  @UseGuards(JwtAuthGuard, new PermissionGuard(['user']))
+  @UseGuards(JwtAuthGuard, new PermissionGuard(['user', 'admin', 'employee']))
   @Post()
   linkUserwithAccount(@Body() createUserDto: CreateUserDto) {
     return this.userAccountsService.update(createUserDto);

@@ -50,7 +50,10 @@ export class AccountsService {
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
-    const account = await this.accountRepository.findOne({ where: { id: id } });
+    const account = await this.accountRepository.findOne({
+      where: { id: id },
+      relations: ['permission'],
+    });
 
     if (!account) {
       return MSG(

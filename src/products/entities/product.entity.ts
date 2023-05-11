@@ -27,7 +27,7 @@ export class Product {
   @Column({ type: 'varchar', length: 50 })
   unit: string;
 
-  @ManyToOne(() => Brand,brand=>brand.products)
+  @ManyToOne(() => Brand, (brand) => brand.products)
   @JoinColumn()
   brand: Brand;
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 27, 2023 lúc 01:25 PM
+-- Thời gian đã tạo: Th4 29, 2023 lúc 03:47 PM
 -- Phiên bản máy phục vụ: 10.4.22-MariaDB
 -- Phiên bản PHP: 7.4.27
 
@@ -34,7 +34,7 @@ CREATE TABLE `accounts` (
   `enable` int(1) NOT NULL DEFAULT 1,
   `userId` int(11) DEFAULT NULL,
   `permissionId` int(11) DEFAULT NULL,
-  `password` varchar(100) NOT NULL
+  `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -42,8 +42,9 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `username`, `email`, `enable`, `userId`, `permissionId`, `password`) VALUES
-(1, 'admin', 'admin@gmail.com', 1, NULL, 2, '$2b$10$ts23PNmGKt3yxjfVyb/pdus17n2EyQDMHDnwbmndwkrP3SGmdWVcW'),
-(2, 'hao1', 'hao1@gmail.com', 1, NULL, 1, '$2b$10$fRb4O64kS/SGRsrM0hAAW.c/9/EJu24JL5I57AahWqSc/GfMbKLhy');
+(1, 'admin', 'admin@gmail.com', 1, NULL, 2, '$2b$10$CEPrkuRGIAsPbRj7ptNuZekEEHr9WnBbCNmCbrgHZC7C6w1KZ1iDq'),
+(2, 'hao1', 'hao1@gmail.com', 1, NULL, 1, '$2b$10$VnPcZLvKOBpZa.AN4TnsyeTsB0DRkACduesGZsZX4bG3c7KCUfvoe'),
+(3, 'hao2', 'hao2@gmail.com', 1, NULL, 3, '$2b$10$sWn6TyukM.q426L6VR8dSu4nJvZAEX9atjdCJUb5lDsAqub4hK.AW');
 
 -- --------------------------------------------------------
 
@@ -170,7 +171,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `quantity`, `price`, `unit`, `img`, `description`, `enable`, `brandId`) VALUES
-(1, 'Nike Air Force', 10, 10000, 'VND', 'img1.jpeg', 'abcd', 1, 1);
+(1, 'Nike Air Force', 10, 10000, 'VND', 'img1.jpeg', 'abcd', 1, 1),
+(2, 'Nike Air Force 15', 10, 10000, 'VND', 'img1.jpeg', 'abcd', 1, 1),
+(3, 'Nike Air Force 16', 10, 10000, 'VND', 'img1.jpeg', 'abcd', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -204,7 +207,9 @@ INSERT INTO `users` (`id`, `firstName`, `lastName`, `address`, `phone`, `enable`
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `IDX_477e3187cedfb5a3ac121e899c` (`username`),
-  ADD UNIQUE KEY `IDX_ee66de6cdc53993296d1ceb8aa` (`email`);
+  ADD UNIQUE KEY `IDX_ee66de6cdc53993296d1ceb8aa` (`email`),
+  ADD KEY `FK_3aa23c0a6d107393e8b40e3e2a6` (`userId`),
+  ADD KEY `FK_ddb2c16b039fb7a6088af414c45` (`permissionId`);
 
 --
 -- Chỉ mục cho bảng `bills`
@@ -226,7 +231,8 @@ ALTER TABLE `bills_products`
 -- Chỉ mục cho bảng `brands`
 --
 ALTER TABLE `brands`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_b209d7ccd90ae0ca1605794a0d5` (`categoryId`);
 
 --
 -- Chỉ mục cho bảng `categories`
@@ -262,7 +268,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `bills`
@@ -298,7 +304,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
@@ -309,6 +315,13 @@ ALTER TABLE `users`
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `accounts`
+--
+ALTER TABLE `accounts`
+  ADD CONSTRAINT `FK_3aa23c0a6d107393e8b40e3e2a6` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ddb2c16b039fb7a6088af414c45` FOREIGN KEY (`permissionId`) REFERENCES `permissions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Các ràng buộc cho bảng `bills`
@@ -323,6 +336,12 @@ ALTER TABLE `bills`
 ALTER TABLE `bills_products`
   ADD CONSTRAINT `FK_2dcb0073f8a9000519739e92c3f` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_f96476a5cd5d022aab3efcc02b5` FOREIGN KEY (`billId`) REFERENCES `bills` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Các ràng buộc cho bảng `brands`
+--
+ALTER TABLE `brands`
+  ADD CONSTRAINT `FK_b209d7ccd90ae0ca1605794a0d5` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Các ràng buộc cho bảng `products`
